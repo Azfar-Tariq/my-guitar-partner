@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_guitar_partner/utils/constant.dart';
+import 'package:social_login_buttons/social_login_buttons.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -23,6 +25,7 @@ class _SignInPageState extends State<SignInPage> {
   bool _isLoading = false;
 
   // functions
+  // signin
   Future<String?> loadUser({
     required final String email,
     required final String password,
@@ -82,6 +85,27 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
+  // github
+  Future signInWithGitHub({required BuildContext context}) async {
+    try {
+      final response = await client.auth.signInWithOAuth(
+        Provider.github,
+      );
+    } catch (error) {
+      Fluttertoast.showToast(msg: error.toString());
+    }
+  }
+
+  Future loginWithGitHub({
+    required BuildContext context,
+  }) async {
+    try {
+      await signInWithGitHub(context: context);
+    } catch (error) {
+      Fluttertoast.showToast(msg: error.toString());
+    }
+  }
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -110,7 +134,7 @@ class _SignInPageState extends State<SignInPage> {
                   ),
 
                   const SizedBox(
-                    height: 75,
+                    height: 50,
                   ),
 
                   const Text(
@@ -275,8 +299,34 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                         ),
 
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Column(
+                      children: [
+                        SocialLoginButton(
+                          buttonType: SocialLoginButtonType.google,
+                          onPressed: () {},
+                        ),
+                        SocialLoginButton(
+                          buttonType: SocialLoginButtonType.facebook,
+                          onPressed: () {},
+                        ),
+                        SocialLoginButton(
+                          buttonType: SocialLoginButtonType.twitter,
+                          onPressed: () {},
+                        ),
+                        SocialLoginButton(
+                          buttonType: SocialLoginButtonType.github,
+                          onPressed: () {
+                            loginWithGitHub(context: context);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
                   const SizedBox(
-                    height: 25,
+                    height: 15,
                   ),
 
                   // sign up

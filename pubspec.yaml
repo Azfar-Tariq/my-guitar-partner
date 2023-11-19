@@ -32,6 +32,7 @@ dependencies:
   flutter:
     sdk: flutter
   fluttertoast: ^8.2.4
+  social_login_buttons: ^1.0.7
   supabase_flutter: ^1.10.25
 
 dev_dependencies:
