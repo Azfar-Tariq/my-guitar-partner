@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_guitar_partner/utils/constant.dart';
@@ -17,26 +19,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final email = _emailController.text.trim();
     final response = await client.auth.resetPasswordForEmail(
       email,
-      redirectTo: 'myapp://reset',
+      redirectTo: 'myguitarapp//authorize',
     );
-
-    // if (response.error != null) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(
-    //       content: Text('Error resetting password: ${response.error!.message}'),
-    //       backgroundColor: Theme.of(context).colorScheme.error,
-    //     ),
-    //   );
-    // } else {
+    await Future.delayed(const Duration(seconds: 10));
     Fluttertoast.showToast(
-        msg: 'Password reset email sent. Please check your email.',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.white,
-        textColor: Colors.black,
-        fontSize: 16.0);
-    // }
+      msg: 'Password reset email sent. Please check your email.',
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.blue,
+      textColor: Colors.black,
+      fontSize: 12.0,
+    );
+    Navigator.of(context).pushNamed('/reset', arguments: {'email': email});
   }
 
   @override

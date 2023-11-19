@@ -1,8 +1,10 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_guitar_partner/utils/constant.dart';
-import 'package:social_login_buttons/social_login_buttons.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_social_button/flutter_social_button.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -90,8 +92,16 @@ class _SignInPageState extends State<SignInPage> {
     try {
       final response = await client.auth.signInWithOAuth(
         Provider.github,
-        redirectTo: 'myguitarpartner://auth/v1/callback',
+        redirectTo: 'myguitarpartner://authorize',
       );
+
+      if (response) {
+        client.auth.onAuthStateChange.listen((event) {
+          if (event != null) {
+            Navigator.pushReplacementNamed(context, '/home');
+          }
+        });
+      }
     } catch (error) {
       Fluttertoast.showToast(msg: error.toString());
     }
@@ -102,15 +112,8 @@ class _SignInPageState extends State<SignInPage> {
   }) async {
     try {
       await signInWithGitHub(context: context);
-      // Navigator.pushReplacementNamed(context, '/home');
     } catch (error) {
       Fluttertoast.showToast(msg: error.toString());
-    }
-  }
-
-  void handleLink(String link) {
-    if (link.startsWith('myguitarpartner://auth/v1/callback')) {
-      Navigator.pushReplacementNamed(context, '/home');
     }
   }
 
@@ -223,7 +226,7 @@ class _SignInPageState extends State<SignInPage> {
                             _obscurePassword
                                 ? Icons.visibility
                                 : Icons.visibility_off,
-                            color: Colors.deepPurple[400],
+                            color: Colors.blue[400],
                           ),
                         ),
                         contentPadding: const EdgeInsets.all(12.0),
@@ -250,7 +253,7 @@ class _SignInPageState extends State<SignInPage> {
                           child: Text(
                             'Forgot Password',
                             style: TextStyle(
-                              color: Colors.deepPurple[400],
+                              color: Colors.blue[400],
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -271,9 +274,9 @@ class _SignInPageState extends State<SignInPage> {
                           decoration: const BoxDecoration(
                             color: Colors.white,
                           ),
-                          child: const Center(
+                          child: Center(
                             child: CircularProgressIndicator(
-                              color: Colors.deepPurple,
+                              color: Colors.blue[400],
                             ),
                           ),
                         )
@@ -290,7 +293,7 @@ class _SignInPageState extends State<SignInPage> {
                                 20.0,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.deepPurple,
+                                color: Colors.blue[400],
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: const Center(
@@ -307,27 +310,36 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                         ),
 
+                  const SizedBox(
+                    height: 15,
+                  ),
+
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Column(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        SocialLoginButton(
-                          buttonType: SocialLoginButtonType.google,
-                          onPressed: () {},
+                        FlutterSocialButton(
+                          onTap: () {},
+                          buttonType: ButtonType.google,
+                          mini: true,
                         ),
-                        SocialLoginButton(
-                          buttonType: SocialLoginButtonType.facebook,
-                          onPressed: () {},
+                        FlutterSocialButton(
+                          onTap: () {},
+                          buttonType: ButtonType.facebook,
+                          mini: true,
                         ),
-                        SocialLoginButton(
-                          buttonType: SocialLoginButtonType.twitter,
-                          onPressed: () {},
+                        FlutterSocialButton(
+                          onTap: () {},
+                          buttonType: ButtonType.twitter,
+                          mini: true,
                         ),
-                        SocialLoginButton(
-                          buttonType: SocialLoginButtonType.github,
-                          onPressed: () {
+                        FlutterSocialButton(
+                          onTap: () {
                             loginWithGitHub(context: context);
                           },
+                          buttonType: ButtonType.github,
+                          mini: true,
                         ),
                       ],
                     ),
@@ -354,7 +366,7 @@ class _SignInPageState extends State<SignInPage> {
                         child: Text(
                           ' Register Now',
                           style: TextStyle(
-                            color: Colors.deepPurple[400],
+                            color: Colors.blue[400],
                             fontWeight: FontWeight.bold,
                           ),
                         ),

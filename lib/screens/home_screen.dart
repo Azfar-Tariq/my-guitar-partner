@@ -9,21 +9,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String? userEmail;
+
+  @override
+  void initState() {
+    super.initState();
+
+    client.auth.onAuthStateChange.listen((event) {
+      setState(() {
+        userEmail = client.auth.currentUser?.email;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    debugPrint(ModalRoute.of(context)?.settings.name);
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Guitar Partner'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            'Hello ${client.auth.currentUser!.email}',
-            style: const TextStyle(fontSize: 18.0),
-          ),
+        actions: [
           IconButton(
             onPressed: () {
               client.auth.signOut();
@@ -35,6 +39,24 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.logout),
           ),
         ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 16),
+            const Text(
+              'Hello,',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '$userEmail',
+              style: const TextStyle(fontSize: 18),
+            ),
+          ],
+        ),
       ),
     );
   }
