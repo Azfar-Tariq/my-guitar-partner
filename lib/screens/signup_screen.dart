@@ -137,7 +137,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/Instagram Profile Image.png',
+                    'assets/images/Instagram_Profile_Image.png',
                     height: 100,
                     width: 100,
                   ),

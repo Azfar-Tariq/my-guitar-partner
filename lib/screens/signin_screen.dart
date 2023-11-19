@@ -90,6 +90,7 @@ class _SignInPageState extends State<SignInPage> {
     try {
       final response = await client.auth.signInWithOAuth(
         Provider.github,
+        redirectTo: 'myguitarpartner://auth/v1/callback',
       );
     } catch (error) {
       Fluttertoast.showToast(msg: error.toString());
@@ -101,8 +102,15 @@ class _SignInPageState extends State<SignInPage> {
   }) async {
     try {
       await signInWithGitHub(context: context);
+      // Navigator.pushReplacementNamed(context, '/home');
     } catch (error) {
       Fluttertoast.showToast(msg: error.toString());
+    }
+  }
+
+  void handleLink(String link) {
+    if (link.startsWith('myguitarpartner://auth/v1/callback')) {
+      Navigator.pushReplacementNamed(context, '/home');
     }
   }
 
@@ -128,7 +136,7 @@ class _SignInPageState extends State<SignInPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/Instagram Profile Image.png',
+                    'assets/images/Instagram_Profile_Image.png',
                     height: 100,
                     width: 100,
                   ),
